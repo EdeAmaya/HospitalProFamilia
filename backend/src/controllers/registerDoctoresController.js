@@ -23,15 +23,10 @@ registerDoctoresController.register = async (req,res) => {
         //generar un token que valide que ya esta registrado
         //y se puede acceder a todas las paginas
 
-        jsonwebtoken.sign(
-            {id: newDoctores._id},
-            config.JWT.secret,
-            {expiresIn: config.JWT.expiresIn},
-
-            (error, token) => {
-                if(error)console.log(error);
-                res.cookie("authToken", token);
-                res.json({message:"Doctor Registrado"})
+        jsonwebtoken.sign({id:newDoctores._id},config.JWT.secret,{expiresIn:config.JWT.expiresIn},(error,token)=>{
+            if(error) console.log(error);
+            res.cookie("authToken",token);
+            res.json({message:"Doctor registered"})
             }
         );
     } 

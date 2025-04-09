@@ -1,11 +1,13 @@
 const CitasController = {};
 import citasModel from "../models/Citas.js";
+import paciente from "../models/Pacientes.js";
+import doctor from "../models/Doctores.js";
 
 
 //select
 
 CitasController.getCitas = async (req, res) => {
-    const Citas = await citasModel.find()
+    const Citas = await citasModel.find().populate("doctorAsignado").populate("pacienteAsignado");
     res.json(Citas)
 };
 

@@ -3,42 +3,42 @@ import PacientesModel from "../models/Pacientes.js"
 import bcryptjs from "bcryptjs"
 import jsonwebtoken from "jsonwebtoken"
 import { config} from "../config.js"
-
+ 
 const loginController = {};
-
+ 
 loginController.login = async (req,res) => {
-
-    const{email, password} = req.body;
+ 
+    const{correo, contraseña} = req.body;
     try{
         let userFound;
         let userType;
-        if(email === config.emailAdmin.email && password === config.emailAdmin.password){
-            userType = "Admin"; 
+        if(correo === config.emailAdmin.email && contraseña === config.emailAdmin.password){
+            userType = "Admin";
             userFound = {_id: "Admin"}
         } else {
-
-            userFound = await PacientesModel.findOne({email});
+ 
+            userFound = await PacientesModel.findOne({correo});
             userType = "Paciente";
-
+ 
             if(!userFound){
-                userFound = await DoctoresModel.findOne({email});
+                userFound = await DoctoresModel.findOne({correo});
                 userType = "Doctor";
             }
         }
-
+ 
         if(!userFound){
             return res.json({message: "User not found"})
         }
-
+ 
         if(userType !== "Admin"){
-            const isMatch = bcryptjs.compare(password, userFound.password);
+            const isMatch = bcryptjs.compare(contraseña, userFound.contraseña);
             if(!isMatch){
                 return res.json({message: "Invalid password"})
             }
         }
-
+ 
         jsonwebtoken.sign(
-
+ 
             {id: userFound._id, userType},
             config.JWT.secret,
             {expiresIn: config.JWT.expiresIn},
@@ -48,11 +48,11 @@ loginController.login = async (req,res) => {
                 res.json({message: "Login Successful"})
             }
         )
-
+ 
     }
     catch(error) {
         console.log(error)
     }
 }
-
+ 
 export default loginController;
