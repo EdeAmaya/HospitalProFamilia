@@ -1,29 +1,29 @@
-import {Schema,model} from "mongoose";
+import {Schema, model} from "mongoose";
 
-const citasShema = new Schema({
-    fechas: {
+const CitasShema = new Schema({
+
+    fecha: {
         type: String,
-        require: true,
+        require: true
     },
-
     hora: {
         type: String,
-        require: true, 
+        require: true,
+        maxLength: 100
     },
-    
-    motivo:{
-        type:String
-
+    motivo: {
+        type: String
     },
-    doctorAsignado:{
-        type:String
+    doctorAsignado: {
+        type: String
     },
-    pacienteAsignado:{
-        type:String
-    },
+    pacienteAsignado: {
+        type: String
+    }
 },{
-    timestamps : true,
-    strict:false
+    timestamps: true,
+    strict: false
 })
 
-export default model("Citas",citasShema)
+
+export default model("citas", CitasShema)
